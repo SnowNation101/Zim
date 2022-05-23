@@ -1,0 +1,284 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Simplified, China) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "D:\\dev\\Zim\\Zim.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "New File",                    ID_FILE_NEWFILE
+        MENUITEM "Open File...",                ID_FILE_OPENFILE
+        MENUITEM "Open Folder...",              ID_FILE_OPENFOLDER
+        MENUITEM "Open Recent",                 ID_FILE_OPENRECENT
+        MENUITEM "Reopen with Encoding",        ID_FILE_REOPENWITHENCODING
+        MENUITEM "Split View",                  ID_FILE_SPLITVIEW
+        MENUITEM "Save",                        ID_FILE_SAVE
+        POPUP "Save with Encoding"
+        BEGIN
+            MENUITEM "UTF-8",                       ID_SAVEWITHENCODING_UTF
+            MENUITEM "UTF-8 with BOM",              ID_SAVEWITHENCODING_UTF40017
+            MENUITEM "UTF-16 LE",                   ID_SAVEWITHENCODING_UTF40018
+        END
+        MENUITEM "Save As...",                  ID_FILE_SAVEAS
+        MENUITEM "Save All",                    ID_FILE_SAVEALL
+        MENUITEM "Print...",                    ID_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "New Window",                  ID_FILE_NEWWINDOW
+        MENUITEM "Close Window",                ID_FILE_CLOSEWINDOW
+        MENUITEM SEPARATOR
+        MENUITEM "Close File",                  ID_FILE_CLOSEFILE
+        MENUITEM "Revert File",                 ID_FILE_REVERTFILE
+        MENUITEM "Close All Files",             ID_FILE_CLOSEALLFILES
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_FILE_EXIT
+    END
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Undo Insert Characters",      ID_EDIT_UNDO
+        MENUITEM "Repeat Insert Characters",    ID_EDIT_REDO
+        POPUP "Undo Selection"
+        BEGIN
+            MENUITEM "Soft Undo",                   ID_UNDOSELECTION_SOFTUNDO
+            MENUITEM "Soft Redo",                   ID_UNDOSELECTION_SOFTREDO
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Cut",                         ID_EDIT_CUT
+        MENUITEM "Copy",                        ID_EDIT_COPY
+        MENUITEM "Copy as HTML",                ID_EDIT_COPYASHTML
+        MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Paste and Indent",            ID_EDIT_PASTEANDINDENT
+        MENUITEM "Paste from History",          ID_EDIT_PASTEFROMHISTORY
+        MENUITEM SEPARATOR
+        MENUITEM "Line",                        ID_Menu40043
+        MENUITEM "Comment",                     ID_EDIT_COMMENT
+        MENUITEM "Text",                        ID_EDIT_TEXT
+        MENUITEM "Tag",                         ID_EDIT_TAG
+        MENUITEM "Mark",                        ID_EDIT_MARK
+        MENUITEM "Code Folding",                ID_EDIT_CODEFOLDING
+        MENUITEM "Convert Case",                ID_EDIT_CONVERTCASE
+        MENUITEM "Wrap",                        ID_EDIT_WRAP
+        MENUITEM "Show Completions",            ID_EDIT_SHOWCOMPLETIONS
+        MENUITEM SEPARATOR
+        MENUITEM "Sort Lines",                  ID_EDIT_SORTLINES
+        MENUITEM "Sort Lines (Case Sensitive)", ID_EDIT_SORTLINES40053
+        MENUITEM "Permute Lines",               ID_EDIT_PERMUTELINES
+        MENUITEM "Permute Selections",          ID_EDIT_PERMUTESELECTIONS
+    END
+    POPUP "Selection"
+    BEGIN
+        MENUITEM "Split into Lines",            ID_SELECTION_SPLITINTOLINES
+        MENUITEM "Single Selection",            ID_SELECTION_SINGLESELECTION
+        MENUITEM "Select All",                  ID_Menu40058
+        MENUITEM "Expand Selection",            ID_SELECTION_EXPANDSELECTION
+        MENUITEM "Expand Selection to Line",    ID_SELECTION_EXPANDSELECTION40060
+        MENUITEM "Expand Selection to Word",    ID_SELECTION_EXPANDSELECTIONTOWORD
+        MENUITEM "Expand Selection to Block",   ID_SELECTION_EXPANDSELECTIONTOBLOCK
+        MENUITEM "Expand Selection to Paragraph", ID_SELECTION_EXPANDSELECTIONTOPARAGRAPH
+        MENUITEM "Expand Selection to Scope",   ID_SELECTION_EXPANDSELECTIONTOSACOPE
+        MENUITEM "Expand Selection to Brackets", ID_SELECTION_EXPANDSELECTIONTOBRACKETS
+        MENUITEM "Expand Selection to Indentation", ID_SELECTION_EXPANDSELECTIONTOINDENTATION
+        MENUITEM SEPARATOR
+        MENUITEM "Add Previous Line",           ID_SELECTION_ADDPREVIOUSLINE
+        MENUITEM "Add Next Line",               ID_SELECTION_ADDNEXTLINE
+        MENUITEM SEPARATOR
+        MENUITEM "Tab Selection",               ID_SELECTION_TABSELECTION
+    END
+    POPUP "Find"
+    BEGIN
+        MENUITEM "Find...",                     ID_FIND_FIND
+        MENUITEM "Find Next",                   ID_FIND_FINDNEXT
+        MENUITEM "Find Previous",               ID_FIND_FINDPREVIOUS
+        MENUITEM "Incremental Find",            ID_FIND_INCREMENTALFIND
+        MENUITEM SEPARATOR
+        MENUITEM "Replace...",                  ID_FIND_REPLACE
+        MENUITEM "Replace Next",                ID_FIND_REPLACENEXT
+        MENUITEM SEPARATOR
+        MENUITEM "Quick Find",                  ID_FIND_QUICKFIND
+        MENUITEM "Quick Find All",              ID_FIND_QUICKFIND40078
+        MENUITEM "Quick Add Next",              ID_FIND_QUICKADDNEXT
+        MENUITEM "Quick Skip Next",             ID_FIND_QUICKSKIPNEXT
+        MENUITEM SEPARATOR
+        MENUITEM "Use Selection for Find",      ID_FIND_USESELECTIONFORFIND
+        MENUITEM "Use Selection for Replace",   ID_FIND_USESELECTIONFORREPLACE
+        MENUITEM SEPARATOR
+        MENUITEM "Find in Files...",            ID_FIND_FINDINFILES
+        MENUITEM "Find Results",                ID_FIND_FINDRESULTS
+        MENUITEM "Cancel Find in Files",        ID_FIND_CANCELFINDINFILES
+    END
+    MENUITEM "View",                        0
+    POPUP "Goto"
+    BEGIN
+        MENUITEM "Goto Anything...",            ID_GOTO_GOTOANYTHING
+        MENUITEM SEPARATOR
+        MENUITEM "Goto Symbol...",              ID_GOTO_GOTOSYMBOL
+        MENUITEM "Goto Symbol in Project...",   ID_GOTO_GOTOSYMBOLINPROJECT
+        MENUITEM "Goto Definition...",          ID_GOTO_GOTODEFINITION
+        MENUITEM "Goto Reference...",           ID_GOTO_GOTOREFERENCE
+        MENUITEM "Goto Line...",                ID_GOTO_GOTOLINE
+    END
+    MENUITEM "Tools",                       ID_TOOLS
+    MENUITEM "Project",                     0
+    MENUITEM "Preferences",                 0
+    POPUP "Help"
+    BEGIN
+        MENUITEM "Documentation",               ID_HELP_DOCUMENTATION
+        MENUITEM "Report a Bug",                ID_HELP_REPORTABUG
+        MENUITEM "QQ",                          ID_HELP_QQ
+        MENUITEM SEPARATOR
+        MENUITEM "Check for Updates...",        ID_HELP_CHECKFORUPDATES
+        MENUITEM "Changelog...",                ID_HELP_CHANGELOG
+        MENUITEM "About Zim",                   ID_HELP_ABOUTZIM
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 239, 131
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Zim"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_DIALOG2 DIALOGEX 0, 0, 309, 59
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find..."
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Find Next",IDOK,197,38,50,14
+    PUSHBUTTON      "Close",IDCANCEL,252,38,50,14
+    EDITTEXT        IDC_EDIT1,37,18,229,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 124
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 52
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE           "Zim"
+    IDC_ZIM                 "ZimMainClass"
+END
+
+#endif    // Chinese (Simplified, China) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
