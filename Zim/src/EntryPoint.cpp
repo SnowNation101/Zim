@@ -1,7 +1,6 @@
 #include "framework.h"
 #include "EntryPoint.h"
 
-#define BUFFER(x,y) *(pBuffer + y * cxBuffer + x)
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
@@ -13,9 +12,9 @@ HINSTANCE hInst; // current instance
 TCHAR szTitle[MAX_LOADSTRING]; // The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING]; // the main window class name
 
-static HWND hdlg = NULL;     // handle to Find dialog box
+HWND hDlg;
 
-FILE* stream = new FILE;
+FILE* stream;
 String file_buffer;
 TCHAR file_data[10000000];
 INT file_lines = 1;
@@ -31,7 +30,6 @@ VOID add_menus(HWND);
 VOID open_file(HWND);
 VOID save_file(HWND);
 VOID save_file_as(HWND);
-VOID find_text(HWND);
 VOID make_number_string();
 VOID draw_caret(HWND, INT, INT, INT);
 
@@ -92,19 +90,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 
 	MSG msg{};
 	while (GetMessage(&msg, nullptr, 0, 0))
-	{
-		if (hdlg == NULL || !IsDialogMessage(hdlg, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+	{		
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
 	}
 	return (int)msg.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	static UINT uFindReplaceMsg;  // message identifier for FINDMSGSTRING 
 	static DWORD dwCharSet = DEFAULT_CHARSET;
 	static int cxCaps; // width of a capital letter
 	static int cxChar, cyChar; // width ant height of a character
@@ -128,8 +122,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnCommand(hWnd, wParam, xCaret, yCaret, line, column);
 		break;
 	case WM_CREATE:
-		uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
-
 		hdc = GetDC(hWnd);
 		SelectObject(hdc, CreateFont(27, 0, 0, 0, 900, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Consolas"));
 		GetTextMetrics(hdc, &tm);
@@ -141,32 +133,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		draw_caret(hWnd, 85 + xCaret * cxChar, yCaret * cyChar, cyChar);
 		break;
 	case WM_SIZE:
-		// obtain window size in pixels
-		if (uMsg == WM_SIZE)
 		{
-			cxClient = LOWORD(lParam);
-			cyClient = HIWORD(lParam);
+			// obtain window size in pixels
+			if (uMsg == WM_SIZE)
+			{
+				cxClient = LOWORD(lParam);
+				cyClient = HIWORD(lParam);
+			}
+
+			// Set vertical scroll bar range and page size
+			si.cbSize = sizeof(si);
+			si.fMask = SIF_RANGE | SIF_PAGE;
+			si.nMin = 0;
+			si.nMax = 200000;
+			si.nPage = cyClient;
+			SetScrollInfo(hWnd, SB_VERT, &si, TRUE);
+
+			// Set horizontal scroll bar range and page size
+			si.cbSize = sizeof(si);
+			si.fMask = SIF_RANGE | SIF_PAGE;
+			si.nMin = 0;
+			si.nMax = 250; // TODO: make ...
+			si.nPage = cxClient / cxChar;
+			SetScrollInfo(hWnd, SB_HORZ, &si, TRUE);
+
+			if (hWnd == GetFocus()) draw_caret(hWnd, 85 + xCaret * cxChar, yCaret * cyChar, cyChar);
+			InvalidateRect(hWnd, nullptr, TRUE);
+			return 0;
 		}
-
-	// Set vertical scroll bar range and page size
-		si.cbSize = sizeof(si);
-		si.fMask = SIF_RANGE | SIF_PAGE;
-		si.nMin = 0;
-		si.nMax = 200000;
-		si.nPage = cyClient;
-		SetScrollInfo(hWnd, SB_VERT, &si, TRUE);
-
-	// Set horizontal scroll bar range and page size
-		si.cbSize = sizeof(si);
-		si.fMask = SIF_RANGE | SIF_PAGE;
-		si.nMin = 0;
-		si.nMax = 250; // TODO: make ...
-		si.nPage = cxClient / cxChar;
-		SetScrollInfo(hWnd, SB_HORZ, &si, TRUE);
-
-		if (hWnd == GetFocus()) draw_caret(hWnd, 85 + xCaret * cxChar, yCaret * cyChar, cyChar);
-		InvalidateRect(hWnd, nullptr, TRUE);
-		return 0;
 
 	case WM_VSCROLL:
 		{
@@ -350,6 +344,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			UpdateWindow(hWnd);
 			return 0;
 		}
+
 	case WM_CHAR:
 		{
 			switch (wParam)
@@ -433,9 +428,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			UpdateWindow(hWnd);
 			return 0;
 		}
+
 	case WM_CLOSE:
 		DestroyWindow(hWnd);
 		break;
+
 	case WM_DESTROY:
 		if (stream != nullptr) fclose(stream);
 		PostQuitMessage(0);
@@ -449,35 +446,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	default:
-		LPFINDREPLACE lpfr;
-
-		if (uMsg == uFindReplaceMsg)
-		{
-			// Get pointer to FINDREPLACE structure from lParam.
-			lpfr = (LPFINDREPLACE)lParam;
-
-			// If the FR_DIALOGTERM flag is set, 
-			// invalidate the handle that identifies the dialog box. 
-			if (lpfr->Flags & FR_DIALOGTERM)
-			{
-				uMsg = NULL;
-				return 0;
-			}
-
-			// If the FR_FINDNEXT flag is set, 
-			// call the application-defined search routine
-			// to search for the requested string. 
-			if (lpfr->Flags & FR_FINDNEXT)
-			{
-				MessageBox(hWnd, TEXT("find next"), TEXT("find next"), MB_OK);
-			}
-
-			return 0;
-		}
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
-
 	return 0;
+}
+
+VOID find_text(HWND hWnd)
+{
+	FINDREPLACE fr;       // common dialog box structure
+	TCHAR szFindWhat[80];  // buffer receiving string
+	szFindWhat[0] = '\0';
+
+	// Initialize FINDREPLACE
+	ZeroMemory(&fr, sizeof(fr));
+	fr.lStructSize = sizeof(fr);
+	fr.hwndOwner = hWnd;
+	fr.lpstrFindWhat = szFindWhat;
+	fr.wFindWhatLen = 80;
+	fr.Flags = 0;
+
+	hDlg = FindText(&fr);
 }
 
 VOID open_file(HWND hWnd)
@@ -502,6 +490,7 @@ VOID open_file(HWND hWnd)
 	GetOpenFileName(&ofn);
 
 	if (stream != nullptr) fclose(stream);
+
 	_tfopen_s(&stream, ofn.lpstrFile, TEXT("a+, ccs=UTF-8"));
 
 	if (stream != nullptr)
@@ -556,101 +545,6 @@ VOID save_file_as(HWND hWnd)
 	save_file();
 }
 
-INT_PTR CALLBACK DlgAbout(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		{
-			HWND hwndOwner;
-			RECT rc, rcDlg, rcOwner;
-
-			// Get the owner window and dialog box rectangles. 
-
-			if ((hwndOwner = GetParent(hDlg)) == NULL)
-			{
-				hwndOwner = GetDesktopWindow();
-			}
-
-			GetWindowRect(hwndOwner, &rcOwner);
-			GetWindowRect(hDlg, &rcDlg);
-			CopyRect(&rc, &rcOwner);
-
-			// Offset the owner and dialog box rectangles so that right and bottom 
-			// values represent the width and height, and then offset the owner again 
-			// to discard space taken up by the dialog box. 
-
-			OffsetRect(&rcDlg, -rcDlg.left, -rcDlg.top);
-			OffsetRect(&rc, -rc.left, -rc.top);
-			OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom);
-
-			// The new position is the sum of half the remaining space and the owner's 
-			// original position. 
-
-			SetWindowPos(hDlg,
-						 HWND_TOP,
-						 rcOwner.left + (rc.right / 2),
-						 rcOwner.top + (rc.bottom / 2),
-						 0, 0, // Ignores size arguments. 
-						 SWP_NOSIZE);
-
-			return TRUE;
-		}
-	case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hDlg, &ps);
-
-			WCHAR name[] = L"Zim";
-			WCHAR license[] = L"Single User License";
-			WCHAR copyright[] = L"Copyright (c) 2022-2022 SnowNation Pty Ltd";
-			WCHAR build[] = L"Stable Channel, Build 1314";
-
-			RECT rect;
-			GetClientRect(hDlg, &rect);
-
-
-			HFONT nameFont = CreateFont(40, 0, 0, 0, 900, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Goudy Stout");
-			HGDIOBJ nOldFont = SelectObject(hdc, nameFont);
-			SetTextColor(hdc, RGB(0, 0, 0));
-			SetBkMode(hdc, TRANSPARENT);
-			RECT rect0 = rect;
-			rect0.top += 35;
-			DrawText(hdc, name, _tcslen(name), &rect0, DT_CENTER);
-
-
-			HFONT hFont = CreateFont(15, 0, 0, 0, 500, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Cascadia Mono");
-			SelectObject(hdc, hFont);
-			SetTextColor(hdc, RGB(100, 100, 100));
-			SetBkMode(hdc, TRANSPARENT);
-
-			RECT rect1 = rect;
-			rect1.top += 75;
-			DrawText(hdc, license, _tcslen(license), &rect1, DT_CENTER);
-			RECT rect2 = rect;
-			rect2.top += 125;
-			DrawText(hdc, copyright, _tcslen(copyright), &rect2, DT_CENTER);
-			RECT rect3 = rect;
-			rect3.top += 145;
-			DrawText(hdc, build, _tcslen(build), &rect3, DT_CENTER);
-			SelectObject(hdc, nOldFont);
-			DeleteObject(hFont);
-
-			EndPaint(hDlg, &ps);
-		}
-		break;
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
-};
-
 VOID make_number_string()
 {
 	numbers_buffer[0] = '\0';
@@ -663,28 +557,11 @@ VOID make_number_string()
 	}
 }
 
-VOID find_text(HWND hWnd)
-{
-	
-
-	FINDREPLACE fr;       // common dialog box structure
-	TCHAR szFindWhat[80];  // buffer receiving string
-	szFindWhat[0] = '\0';
-
-
-	// Initialize FINDREPLACE
-	ZeroMemory(&fr, sizeof(fr));
-	fr.lStructSize = sizeof(fr);
-	fr.hwndOwner = hWnd;
-	fr.lpstrFindWhat = szFindWhat;
-	fr.wFindWhatLen = 80;
-	fr.Flags = 0;
-
-	hdlg = FindText(&fr);
-}
-
-VOID OnPaint(HWND hWnd, SCROLLINFO& si, INT& xPos, INT& yPos, INT xCaret, INT yCaret, INT cWidth, INT cHeight, INT line,
-			 INT column)
+VOID OnPaint(HWND hWnd, SCROLLINFO& si, 
+	INT& xPos,  INT& yPos,
+	INT xCaret, INT yCaret, 
+	INT cWidth, INT cHeight,
+	INT line,   INT column)
 
 {
 	HDC hdc;
@@ -841,3 +718,98 @@ size_t get_pos_in_string(INT line, INT column)
 
 	return pos + column - 1;
 }
+
+INT_PTR CALLBACK DlgAbout(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+	{
+		HWND hwndOwner;
+		RECT rc, rcDlg, rcOwner;
+
+		// Get the owner window and dialog box rectangles. 
+
+		if ((hwndOwner = GetParent(hDlg)) == NULL)
+		{
+			hwndOwner = GetDesktopWindow();
+		}
+
+		GetWindowRect(hwndOwner, &rcOwner);
+		GetWindowRect(hDlg, &rcDlg);
+		CopyRect(&rc, &rcOwner);
+
+		// Offset the owner and dialog box rectangles so that right and bottom 
+		// values represent the width and height, and then offset the owner again 
+		// to discard space taken up by the dialog box. 
+
+		OffsetRect(&rcDlg, -rcDlg.left, -rcDlg.top);
+		OffsetRect(&rc, -rc.left, -rc.top);
+		OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom);
+
+		// The new position is the sum of half the remaining space and the owner's 
+		// original position. 
+
+		SetWindowPos(hDlg,
+			HWND_TOP,
+			rcOwner.left + (rc.right / 2),
+			rcOwner.top + (rc.bottom / 2),
+			0, 0, // Ignores size arguments. 
+			SWP_NOSIZE);
+
+		return TRUE;
+	}
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hDlg, &ps);
+
+		WCHAR name[] = L"Zim";
+		WCHAR license[] = L"Single User License";
+		WCHAR copyright[] = L"Copyright (c) 2022-2022 SnowNation Pty Ltd";
+		WCHAR build[] = L"Stable Channel, Build 1314";
+
+		RECT rect;
+		GetClientRect(hDlg, &rect);
+
+
+		HFONT nameFont = CreateFont(40, 0, 0, 0, 900, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Goudy Stout");
+		HGDIOBJ nOldFont = SelectObject(hdc, nameFont);
+		SetTextColor(hdc, RGB(0, 0, 0));
+		SetBkMode(hdc, TRANSPARENT);
+		RECT rect0 = rect;
+		rect0.top += 35;
+		DrawText(hdc, name, _tcslen(name), &rect0, DT_CENTER);
+
+
+		HFONT hFont = CreateFont(15, 0, 0, 0, 500, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Cascadia Mono");
+		SelectObject(hdc, hFont);
+		SetTextColor(hdc, RGB(100, 100, 100));
+		SetBkMode(hdc, TRANSPARENT);
+
+		RECT rect1 = rect;
+		rect1.top += 75;
+		DrawText(hdc, license, _tcslen(license), &rect1, DT_CENTER);
+		RECT rect2 = rect;
+		rect2.top += 125;
+		DrawText(hdc, copyright, _tcslen(copyright), &rect2, DT_CENTER);
+		RECT rect3 = rect;
+		rect3.top += 145;
+		DrawText(hdc, build, _tcslen(build), &rect3, DT_CENTER);
+		SelectObject(hdc, nOldFont);
+		DeleteObject(hFont);
+
+		EndPaint(hDlg, &ps);
+	}
+	break;
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+};

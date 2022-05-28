@@ -1,21 +1,21 @@
 ﻿  EntryPoint.cpp
-D:\dev\Zim\Zim\src\EntryPoint.cpp(5,1): warning C4005: 'max': macro redefinition
+D:\dev\Zim\Zim\src\EntryPoint.cpp(4,1): warning C4005: 'max': macro redefinition
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(193): message : see previous definition of 'max'
-D:\dev\Zim\Zim\src\EntryPoint.cpp(6,1): warning C4005: 'min': macro redefinition
+D:\dev\Zim\Zim\src\EntryPoint.cpp(5,1): warning C4005: 'min': macro redefinition
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(197): message : see previous definition of 'min'
-D:\dev\Zim\Zim\src\EntryPoint.cpp(126,15): warning C4244: '=': conversion from 'WPARAM' to 'DWORD', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(119,14): warning C4101: 'ps': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(118,9): warning C4101: 'y': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(118,6): warning C4101: 'x': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(620,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(630,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(633,66): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(636,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(738,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(756,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(120,15): warning C4244: '=': conversion from 'WPARAM' to 'DWORD', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(113,14): warning C4101: 'ps': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(112,9): warning C4101: 'y': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(112,6): warning C4101: 'x': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(615,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(633,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(783,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(793,61): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(796,65): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(799,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  1 of 48 functions ( 2.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  4 of 47 functions ( 8.5%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Zim.vcxproj -> D:\dev\Zim\bin\x64\Release\Zim.exe

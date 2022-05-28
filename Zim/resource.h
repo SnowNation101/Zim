@@ -7,9 +7,6 @@
 #define IDS_APP_TITLE                   109
 #define IDC_ZIM                         110
 #define IDD_DIALOG1                     110
-#define IDD_DIALOG2                     112
-#define IDC_CHECK1                      1001
-#define IDC_EDIT1                       1002
 #define ID_FILE_NEWFILE                 40001
 #define ID_FILE_OPENFILE                40002
 #define ID_FILE_OPENFOLDER              40003
