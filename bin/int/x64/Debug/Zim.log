@@ -1,17 +1,17 @@
 ﻿D:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(514,5): warning MSB8028: The intermediate directory (D:\dev\Zim\bin\int\x64\Debug\) contains files shared from another project (String.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   EntryPoint.cpp
-D:\dev\Zim\Zim\src\EntryPoint.cpp(5,1): warning C4005: 'max': macro redefinition
+D:\dev\Zim\Zim\src\EntryPoint.cpp(4,1): warning C4005: 'max': macro redefinition
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(193): message : see previous definition of 'max'
-D:\dev\Zim\Zim\src\EntryPoint.cpp(6,1): warning C4005: 'min': macro redefinition
+D:\dev\Zim\Zim\src\EntryPoint.cpp(5,1): warning C4005: 'min': macro redefinition
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(197): message : see previous definition of 'min'
-D:\dev\Zim\Zim\src\EntryPoint.cpp(126,15): warning C4244: '=': conversion from 'WPARAM' to 'DWORD', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(119,14): warning C4101: 'ps': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(118,9): warning C4101: 'y': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(118,6): warning C4101: 'x': unreferenced local variable
-D:\dev\Zim\Zim\src\EntryPoint.cpp(620,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(630,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(633,66): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(636,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(738,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\dev\Zim\Zim\src\EntryPoint.cpp(756,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(125,15): warning C4244: '=': conversion from 'WPARAM' to 'DWORD', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(116,14): warning C4101: 'ps': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(115,9): warning C4101: 'y': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(115,6): warning C4101: 'x': unreferenced local variable
+D:\dev\Zim\Zim\src\EntryPoint.cpp(649,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(667,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(817,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(827,61): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(830,65): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\dev\Zim\Zim\src\EntryPoint.cpp(833,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Zim.vcxproj -> D:\dev\Zim\bin\x64\Debug\Zim.exe

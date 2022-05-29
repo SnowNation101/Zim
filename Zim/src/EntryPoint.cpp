@@ -12,8 +12,10 @@ HINSTANCE hInst; // current instance
 TCHAR szTitle[MAX_LOADSTRING]; // The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING]; // the main window class name
 
-HWND hDlg;
+static HWND hDlg = nullptr;
+static UINT uFindReplaceMsg;  // message identifier for FINDMSGSTRING
 
+size_t find_pos = 0;
 FILE* stream;
 String file_buffer;
 TCHAR file_data[10000000];
@@ -88,12 +90,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 	ShowWindow(hwnd, nCmdShow);
 	UpdateWindow(hwnd);
 
-	MSG msg{};
-	while (GetMessage(&msg, nullptr, 0, 0))
-	{		
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+	MSG msg;
+	while ( GetMessage(&msg, nullptr, 0, 0) > 0 )
+	{
+		if (!IsDialogMessage(hDlg, &msg))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
+
+	DestroyWindow(hwnd);
+	UnregisterClass(wc.lpszClassName, hInstance);
+
 	return (int)msg.wParam;
 }
 
@@ -104,15 +113,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static int cxChar, cyChar; // width ant height of a character
 	static int cxClient, cyClient; // width and height of client window
 	static int line = 1, column = 1; // Line and column of current position
-	static int cxBuffer, cyBuffer;
 	static int xCaret = 0, yCaret = 0;
 	int iVertPos, iHorzPos;
-	static TCHAR* pBuffer = NULL;
 	HDC hdc;
-	int x, y;
-	PAINTSTRUCT ps;
 	SCROLLINFO si;
 	TEXTMETRIC tm;
+	LPFINDREPLACE lpfr;
+
+	
 
 	switch (uMsg)
 	{
@@ -122,6 +130,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnCommand(hWnd, wParam, xCaret, yCaret, line, column);
 		break;
 	case WM_CREATE:
+		uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
+
 		hdc = GetDC(hWnd);
 		SelectObject(hdc, CreateFont(27, 0, 0, 0, 900, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"Consolas"));
 		GetTextMetrics(hdc, &tm);
@@ -446,14 +456,49 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	default:
-		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+		// Handle the message from "Find" dialog
+		if (uMsg == uFindReplaceMsg)
+		{
+			// Get pointer to FINDREPLACE structure from lParam.
+			lpfr = (LPFINDREPLACE)lParam;
+
+			// If the FR_DIALOGTERM flag is set, 
+			// invalidate the handle that identifies the dialog box. 
+			if (lpfr->Flags & FR_DIALOGTERM)
+			{
+				hDlg = nullptr;
+				return 0;
+			}
+
+			// If the FR_FINDNEXT flag is set, 
+			// call the application-defined search routine
+			// to search for the requested string. 
+			if (lpfr->Flags & FR_FINDNEXT)
+			{
+				TCHAR* s = lpfr->lpstrFindWhat;
+				find_pos = file_buffer.find(s, find_pos);
+				TCHAR resultText[100];
+				resultText[0] = '\0';
+				if (find_pos != (size_t)-1)
+				{
+					_stprintf_s(resultText, 99, TEXT("Found at %llu"), find_pos);
+				}
+				else
+				{
+					_stprintf_s(resultText, 99, TEXT("Not Found!"));
+				}
+				MessageBox(hDlg, resultText, TEXT("Result"), NULL);
+			}
+			return 0;
+		}
+		break;
 	}
-	return 0;
+	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 VOID find_text(HWND hWnd)
 {
-	FINDREPLACE fr;       // common dialog box structure
+	static FINDREPLACE fr;       // common dialog box structure
 	TCHAR szFindWhat[80];  // buffer receiving string
 	szFindWhat[0] = '\0';
 
@@ -463,7 +508,7 @@ VOID find_text(HWND hWnd)
 	fr.hwndOwner = hWnd;
 	fr.lpstrFindWhat = szFindWhat;
 	fr.wFindWhatLen = 80;
-	fr.Flags = 0;
+	fr.Flags = FR_HIDEUPDOWN | FR_HIDEMATCHCASE| FR_HIDEWHOLEWORD;
 
 	hDlg = FindText(&fr);
 }
@@ -801,8 +846,9 @@ INT_PTR CALLBACK DlgAbout(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		DeleteObject(hFont);
 
 		EndPaint(hDlg, &ps);
+		break;
 	}
-	break;
+	
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{

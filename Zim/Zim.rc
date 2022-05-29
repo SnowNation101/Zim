@@ -163,7 +163,36 @@ BEGIN
         MENUITEM "Find Results",                ID_FIND_FINDRESULTS
         MENUITEM "Cancel Find in Files",        ID_FIND_CANCELFINDINFILES
     END
-    MENUITEM "View",                        0
+    POPUP "View"
+    BEGIN
+        MENUITEM "Side Bar",                    ID_VIEW_SIDEBAR
+        MENUITEM "Hide Minimap",                ID_VIEW_HIDEMINIMAP
+        MENUITEM "Hide Tabs",                   ID_VIEW_HIDETABS
+        MENUITEM "Hide Status Bar",             ID_VIEW_HIDESTATUSBAR
+        MENUITEM "Hide Menu",                   ID_VIEW_HIDEMENU
+        MENUITEM "Show Console",                ID_VIEW_SHOWCONSOLE
+        MENUITEM SEPARATOR
+        MENUITEM "Enter Full Screen",           ID_VIEW_ENTERFULLSCREEN
+        MENUITEM "Enter Distraction Free Mode", ID_VIEW_ENTERDISTRACTIONFREEMODE
+        MENUITEM SEPARATOR
+        MENUITEM "Layout",                      ID_VIEW_LAYOUT
+        MENUITEM "Groups",                      ID_VIEW_GROUPS
+        MENUITEM "Focus Group",                 ID_VIEW_FOCUSGROUP
+        MENUITEM "Move File to Group",          ID_VIEW_MOVEFILETOGROUP
+        MENUITEM SEPARATOR
+        MENUITEM "Syntax",                      ID_VIEW_SYNTAX
+        MENUITEM "Indentation",                 ID_VIEW_INDENTATION
+        MENUITEM "Line Endings",                ID_VIEW_LINEENDINGS
+        MENUITEM SEPARATOR
+        MENUITEM "Word Wrap",                   ID_VIEW_WORDWRAP
+        MENUITEM "Word Wrap Column",            ID_VIEW_WORDWRAP40111
+        MENUITEM "Ruler",                       ID_VIEW_RULER
+        MENUITEM SEPARATOR
+        MENUITEM "Spell Check",                 ID_VIEW_SPELLCHECK
+        MENUITEM "Next Misspelling",            ID_VIEW_NEXTMISSPELLING
+        MENUITEM "Prev Misspelling",            ID_VIEW_PREVMISSPELLING
+        MENUITEM "Dictionary",                  ID_VIEW_DICTIONARY
+    END
     POPUP "Goto"
     BEGIN
         MENUITEM "Goto Anything...",            ID_GOTO_GOTOANYTHING
@@ -173,15 +202,86 @@ BEGIN
         MENUITEM "Goto Definition...",          ID_GOTO_GOTODEFINITION
         MENUITEM "Goto Reference...",           ID_GOTO_GOTOREFERENCE
         MENUITEM "Goto Line...",                ID_GOTO_GOTOLINE
+        MENUITEM SEPARATOR
+        MENUITEM "Next Modification",           ID_GOTO_NEXTMODIFICATION
+        MENUITEM "Previous Modification",       0
+        MENUITEM SEPARATOR
+        MENUITEM "Jump Back",                   ID_GOTO_JUMPBACK
+        MENUITEM "Jump Forward",                ID_GOTO_JUMPFORWARD
+        MENUITEM SEPARATOR
+        MENUITEM "Switch File",                 ID_GOTO_SWITCHFILE
+        MENUITEM SEPARATOR
+        MENUITEM "Scroll",                      ID_GOTO_SCROLL
+        MENUITEM "Bookmarks",                   ID_GOTO_BOOKMARKS
+        MENUITEM SEPARATOR
+        MENUITEM "Jump to Matching Bracket",    ID_GOTO_JUMPTOMATCHINGBRACKET
     END
-    MENUITEM "Tools",                       ID_TOOLS
-    MENUITEM "Project",                     0
-    MENUITEM "Preferences",                 0
+    POPUP "Tools"
+    BEGIN
+        MENUITEM "Command Palette...",          ID_TOOLS_COMMANDPALETTE
+        MENUITEM "Snippets..",                  ID_TOOLS_SNIPPETS
+        MENUITEM SEPARATOR
+        MENUITEM "Build System",                ID_TOOLS_BUILDSYSTEM
+        MENUITEM "Build",                       ID_TOOLS_BUILD
+        MENUITEM "Build With..",                ID_TOOLS_BUILDWITH
+        MENUITEM "Cancel Build",                ID_TOOLS_CANCELBUILD
+        MENUITEM "Build Results",               ID_TOOLS_BUILDRESULTS
+        MENUITEM "Save All on Build",           ID_TOOLS_SAVEALLONBUILD
+        MENUITEM SEPARATOR
+        MENUITEM "Record Macro",                ID_TOOLS_RECORDMACRO
+        MENUITEM "Playback Macro",              ID_TOOLS_PLAYBACKMACRO
+        MENUITEM "Save Macro...",               ID_TOOLS_SAVEMACRO
+        MENUITEM "Macros",                      ID_TOOLS_MACROS
+        MENUITEM SEPARATOR
+        MENUITEM "Developer",                   ID_TOOLS_DEVELOPER
+    END
+    POPUP "Project"
+    BEGIN
+        MENUITEM "Open Project...",             ID_PROJECT_OPENPROJECT
+        MENUITEM "Switch Project...",           ID_PROJECT_SWITCHPROJECT
+        MENUITEM "Quick Switch Project...",     ID_PROJECT_QUICKSWITCHPROJECT
+        MENUITEM "Open Recent",                 ID_PROJECT_OPENRECENT
+        MENUITEM SEPARATOR
+        MENUITEM "Save Project As...",          ID_PROJECT_SAVEPROJECTAS
+        MENUITEM "Close Project",               ID_PROJECT_CLOSEPROJECT
+        MENUITEM "Edit Project",                ID_PROJECT_EDITPROJECT
+        MENUITEM SEPARATOR
+        MENUITEM "New Workspace for Project",   ID_PROJECT_NEWWORKSPACEFORPROJECT
+        MENUITEM "Save Workspace As...",        0
+        MENUITEM SEPARATOR
+        MENUITEM "Add Folder to Project...",    ID_PROJECT_ADDFOLDERTOPROJECT
+        MENUITEM "Remove all Folders from Project", ID_PROJECT_REMOVEALLFOLDERSFROMPROJECT
+        MENUITEM "Refresh Folders",             ID_PROJECT_REFRESHFOLDERS
+    END
+    POPUP "Preferences"
+    BEGIN
+        MENUITEM "Browse Packages...",          ID_PREFERENCES_BROWSEPACKAGES
+        MENUITEM SEPARATOR
+        MENUITEM "Settings",                    ID_PREFERENCES_SETTINGS
+        MENUITEM "Settings - Syntax Specific",  ID_PREFERENCES_SETTINGS40154
+        MENUITEM "Settings - Distraction Free", ID_PREFERENCES_SETTINGS40155
+        MENUITEM SEPARATOR
+        MENUITEM "Key Bindings",                ID_PREFERENCES_KEYBINDINGS
+        MENUITEM "Select Color Scheme...",      ID_PREFERENCES_SELECTCOLORSCHEME
+        MENUITEM "Customize Color Scheme",      ID_PREFERENCES_CUSTOMIZECOLORSCHEME
+        MENUITEM SEPARATOR
+        MENUITEM "Select Theme...",             ID_PREFERENCES_SELECTTHEME
+        MENUITEM "Customize Color Scheme",      ID_PREFERENCES_CUSTOMIZECOLORSCHEME40160
+        MENUITEM SEPARATOR
+        MENUITEM "Select Theme...",             ID_PREFERENCES_SELECTTHEME40161
+        MENUITEM "Customize Theme",             ID_PREFERENCES_CUSTOMIZETHEME
+        MENUITEM SEPARATOR
+        MENUITEM "Font",                        ID_PREFERENCES_FONT
+        MENUITEM "Package Settings",            ID_PREFERENCES_PACKAGESETTINGS
+        MENUITEM "Package Control",             ID_PREFERENCES_PACKAGECONTROL
+    END
     POPUP "Help"
     BEGIN
         MENUITEM "Documentation",               ID_HELP_DOCUMENTATION
         MENUITEM "Report a Bug",                ID_HELP_REPORTABUG
         MENUITEM "QQ",                          ID_HELP_QQ
+        MENUITEM SEPARATOR
+        MENUITEM "Indexing Status...",          ID_HELP_INDEXINGSTATUS
         MENUITEM SEPARATOR
         MENUITEM "Check for Updates...",        ID_HELP_CHECKFORUPDATES
         MENUITEM "Changelog...",                ID_HELP_CHANGELOG

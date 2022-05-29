@@ -31,5 +31,6 @@
 *.out
 *.app
 
-# VS Folder
+# Folders
 /.vs
+/bin
