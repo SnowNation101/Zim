@@ -587,7 +587,7 @@ VOID save_file_as(HWND hWnd)
 
 	if (stream != nullptr) fclose(stream);
 	_tfopen_s(&stream, ofn.lpstrFile, TEXT("w+, ccs=UTF-8"));
-	save_file();
+	if (stream != nullptr) save_file();
 }
 
 VOID make_number_string()
@@ -669,7 +669,7 @@ VOID OnPaint(HWND hWnd, SCROLLINFO& si,
 
 	// Draw the status
 	TCHAR status[100];
-	swprintf_s(status, 99, TEXT("line: %d, Column: %d"), line, column);
+	swprintf_s(status, 99, TEXT("Line: %d, Column: %d"), line, column);
 	HFONT statusFont = CreateFont(0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
 								  L"Microsoft YaHei UI Light");
 	SelectObject(hdc, statusFont);
